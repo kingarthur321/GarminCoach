@@ -1,0 +1,13 @@
+{
+  "recorded_at": "2026-10-03T09:16:09+00:00",
+  "data": "synthetic fixtures only",
+  "provider": "Claude API",
+  "model": "claude-sonnet-5-5",
+  "checks": [
+    "Actual API answer with editable Almgren-inspired system prompt returned",
+    "Structured schema and evidence references validated",
+    "No workout proposal or Garmin operation",
+    "Disposable store; personal data unchanged"
+  ],
+  "result": "passed"
+}

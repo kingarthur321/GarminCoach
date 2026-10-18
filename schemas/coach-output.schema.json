@@ -1,0 +1,243 @@
+{
+  "type": "object",
+  "properties": {
+    "coach_summary": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "type": "string",
+          "enum": [
+            "fixture",
+            "garmin"
+          ]
+        },
+        "generated_at": {
+          "type": "string"
+        },
+        "headline": {
+          "type": "string"
+        },
+        "observations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "measured",
+                  "derived",
+                  "user_statement",
+                  "ai_suggestion"
+                ]
+              },
+              "text": {
+                "type": "string"
+              },
+              "references": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "kind",
+              "text",
+              "references"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "uncertainty": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "source",
+        "generated_at",
+        "headline",
+        "observations",
+        "uncertainty"
+      ],
+      "additionalProperties": false
+    },
+    "training_plan": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "type": "string",
+          "enum": [
+            "fixture",
+            "garmin"
+          ]
+        },
+        "generated_at": {
+          "type": "string"
+        },
+        "revision_id": {
+          "type": "string"
+        },
+        "revision_reason": {
+          "type": "string"
+        },
+        "week_start": {
+          "type": "string"
+        },
+        "illustrative": {
+          "type": "boolean"
+        },
+        "sessions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "revision": {
+                "type": "string"
+              },
+              "date": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              },
+              "state": {
+                "type": "string",
+                "enum": [
+                  "planned",
+                  "completed",
+                  "skipped"
+                ]
+              },
+              "rationale": {
+                "type": "string"
+              },
+              "references": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "steps": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "type": "string",
+                      "enum": [
+                        "warmup",
+                        "run",
+                        "recovery",
+                        "cooldown"
+                      ]
+                    },
+                    "unit": {
+                      "type": "string",
+                      "enum": [
+                        "seconds",
+                        "meters"
+                      ]
+                    },
+                    "value": {
+                      "type": "number"
+                    },
+                    "description": {
+                      "type": "string"
+                    },
+                    "target": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "properties": {
+                            "kind": {
+                              "type": "string",
+                              "enum": [
+                                "effort"
+                              ]
+                            },
+                            "value": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "kind",
+                            "value"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "kind": {
+                              "type": "string",
+                              "enum": [
+                                "heart_rate_bpm"
+                              ]
+                            },
+                            "low": {
+                              "type": "number"
+                            },
+                            "high": {
+                              "type": "number"
+                            }
+                          },
+                          "required": [
+                            "kind",
+                            "low",
+                            "high"
+                          ],
+                          "additionalProperties": false
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "unit",
+                    "value",
+                    "description",
+                    "target"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "id",
+              "revision",
+              "date",
+              "title",
+              "state",
+              "rationale",
+              "references",
+              "steps"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "source",
+        "generated_at",
+        "revision_id",
+        "revision_reason",
+        "week_start",
+        "illustrative",
+        "sessions"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "coach_summary",
+    "training_plan"
+  ],
+  "additionalProperties": false
+}

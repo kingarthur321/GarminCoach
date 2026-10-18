@@ -1,0 +1,14 @@
+{
+  "garmin_mcp_commit": "cfc5d799ab0f165e837f1188a1d093c65838aaf7",
+  "source_archive_sha256": "fea0f75c21280b50f6765d24dc5570962e92742e00d87282b148adaad35e918a",
+  "app_runtime": "Python standard library >=3.12",
+  "tested_python": "3.14.6",
+  "tested_codex": "0.159.3",
+  "tested_claude": "2.1.231",
+  "mcp_schema_verified": true,
+  "garmin_account_verified": true,
+  "garmin_reads_verified": true,
+  "personalized_plan_verified": false,
+  "garmin_workout_verified": false,
+  "watch_verified": false
+}

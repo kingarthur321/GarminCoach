@@ -1,0 +1,12 @@
+{
+  "recorded_at": "2026-10-03",
+  "data": "Disposable synthetic store for writes; read-only saved Garmin dashboard for regression check",
+  "checks": [
+    "80 fixture/mock tests passed, including durable memory create, correction, deletion, source validation, bounded context and stale chat/planning rejection",
+    "Same-origin/CSRF protected memory HTTP round trip passed",
+    "Disposable Chrome browser passed manual-note create/edit, coach-insight review, delete and 390px layout with no JavaScript errors",
+    "Read-only saved-Garmin dashboard browser check passed with no outgoing network or state writes",
+    "Saved real Garmin snapshot validation passed; existing workout registry and scheduler were not changed"
+  ],
+  "result": "passed"
+}

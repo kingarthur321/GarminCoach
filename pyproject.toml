@@ -1,0 +1,9 @@
+[project]
+name = "ai-running-coach"
+version = "1.0.0"
+description = "Private local running dashboard, coached through your coding agent"
+requires-python = ">=3.12"
+dependencies = []
+
+[tool.running-coach]
+garmin-mcp-commit = "cfc5d799ab0f165e837f1188a1d093c65838aaf7"

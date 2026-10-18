@@ -1,0 +1,395 @@
+[
+  {
+    "name": "get_activities_by_date",
+    "description": "Get activities between specified dates with pagination support.\n\nFor accounts with large activity histories, broad date ranges can return\nthousands of activities in a single response. Use page and page_size to\nretrieve activities in manageable chunks and avoid \"result too large\" errors.\nActivities are ordered newest-first.\n\nPagination: when has_more is true the response includes next_page \u2014 pass\nthat value as page on the next call to retrieve the following page. Repeat\nuntil has_more is false.\n\nNote: total_count for a date range is not available from the Garmin API\nwithout fetching all results. Use has_more / next_page to walk pages.\n\nEach activity includes an event_type field with values such as:\n  - \"race\"          \u2014 explicitly tagged as a race by the user\n  - \"training\"      \u2014 explicitly tagged as a training activity\n  - \"uncategorized\" \u2014 no event type set; common for Peloton imports and\n                      untagged outdoor runs. Distinct from \"training\":\n                      filter for races with event_type == \"race\" rather\n                      than excluding \"training\", since many non-race\n                      activities appear as \"uncategorized\" not \"training\"\n  - field absent    \u2014 API returned no eventType for this activity; not\n                      observed in practice in any activity back to 2012\n                      (oldest activities sampled on this account)\n\nArgs:\n    start_date: Start date in YYYY-MM-DD format\n    end_date: End date in YYYY-MM-DD format\n    activity_type: Optional activity type filter (e.g., cycling, running, swimming)\n    page: Zero-based page number (default 0)\n    page_size: Number of activities per page, max 200 (default 100)\n",
+    "inputSchema": {
+      "properties": {
+        "start_date": {
+          "title": "Start Date",
+          "type": "string"
+        },
+        "end_date": {
+          "title": "End Date",
+          "type": "string"
+        },
+        "activity_type": {
+          "default": "",
+          "title": "Activity Type",
+          "type": "string"
+        },
+        "page": {
+          "default": 0,
+          "title": "Page",
+          "type": "integer"
+        },
+        "page_size": {
+          "default": 100,
+          "title": "Page Size",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "start_date",
+        "end_date"
+      ],
+      "title": "get_activities_by_dateArguments",
+      "type": "object"
+    }
+  },
+  {
+    "name": "get_activity_splits",
+    "description": "Get splits for an activity\n\nArgs:\n    activity_id: ID of the activity to retrieve splits for\n",
+    "inputSchema": {
+      "properties": {
+        "activity_id": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "title": "Activity Id"
+        }
+      },
+      "required": [
+        "activity_id"
+      ],
+      "title": "get_activity_splitsArguments",
+      "type": "object"
+    }
+  },
+  {
+    "name": "get_training_readiness",
+    "description": "Get training readiness data with curated metrics\n\nReturns training readiness score and contributing factors.\n\nArgs:\n    date: Date in YYYY-MM-DD format\n",
+    "inputSchema": {
+      "properties": {
+        "date": {
+          "title": "Date",
+          "type": "string"
+        }
+      },
+      "required": [
+        "date"
+      ],
+      "title": "get_training_readinessArguments",
+      "type": "object"
+    }
+  },
+  {
+    "name": "get_rhr_day",
+    "description": "Get resting heart rate data\n\nArgs:\n    date: Date in YYYY-MM-DD format\n",
+    "inputSchema": {
+      "properties": {
+        "date": {
+          "title": "Date",
+          "type": "string"
+        }
+      },
+      "required": [
+        "date"
+      ],
+      "title": "get_rhr_dayArguments",
+      "type": "object"
+    }
+  },
+  {
+    "name": "get_heart_rates_summary",
+    "description": "Get heart rate summary with essential metrics (lightweight version)\n\nReturns a compact summary (~500 bytes) instead of full time-series data (~25KB).\nIdeal for daily health checkups and LLM integrations.\n\nArgs:\n    date: Date in YYYY-MM-DD format\n",
+    "inputSchema": {
+      "properties": {
+        "date": {
+          "title": "Date",
+          "type": "string"
+        }
+      },
+      "required": [
+        "date"
+      ],
+      "title": "get_heart_rates_summaryArguments",
+      "type": "object"
+    }
+  },
+  {
+    "name": "get_sleep_summary_range",
+    "description": "Get lightweight sleep summaries for every night in a date range.\n\nReturns the same curated metrics as get_sleep_summary (sleep score, duration,\nsleep stages, HRV, resting HR, etc.) for each night between start_date and\nend_date, inclusive. Use this instead of calling get_sleep_summary once per\nnight when analyzing sleep trends over weeks or months.\n\nNote: Garmin Connect does not expose a native range endpoint for sleep, so\nthis makes one request per night internally. Recommended range: up to a\nfew weeks for quick checks. Maximum: 90 nights per call.\n\nArgs:\n    start_date: Start date in YYYY-MM-DD format\n    end_date: End date in YYYY-MM-DD format\n",
+    "inputSchema": {
+      "properties": {
+        "start_date": {
+          "title": "Start Date",
+          "type": "string"
+        },
+        "end_date": {
+          "title": "End Date",
+          "type": "string"
+        }
+      },
+      "required": [
+        "start_date",
+        "end_date"
+      ],
+      "title": "get_sleep_summary_rangeArguments",
+      "type": "object"
+    }
+  },
+  {
+    "name": "get_recovery_time_remaining",
+    "description": "Get remaining recovery time in hours for a day.\n\nThis is the Firstbeat recovery clock shown on-device, distinct from\nTraining Readiness score (missing on some devices such as Forerunner 255)\nand from Training Status ACWR. When Training Readiness snapshots exist\nthey are the current remaining value. Otherwise the tool decays\nrecoveryTime assigned on recent activities.\n\nArgs:\n    date: Date in YYYY-MM-DD format. Defaults to today.\n",
+    "inputSchema": {
+      "properties": {
+        "date": {
+          "default": "",
+          "title": "Date",
+          "type": "string"
+        }
+      },
+      "title": "get_recovery_time_remainingArguments",
+      "type": "object"
+    }
+  },
+  {
+    "name": "get_training_status",
+    "description": "Get training status with curated metrics\n\nReturns comprehensive training status including load, VO2 max, recovery,\nand training readiness indicators.\n\nArgs:\n    date: Date in YYYY-MM-DD format\n",
+    "inputSchema": {
+      "properties": {
+        "date": {
+          "title": "Date",
+          "type": "string"
+        }
+      },
+      "required": [
+        "date"
+      ],
+      "title": "get_training_statusArguments",
+      "type": "object"
+    }
+  },
+  {
+    "name": "get_training_load_trend",
+    "description": "Get the Performance Management Chart (CTL/ATL/TSB) over a date range.\n\nReturns Chronic Training Load (CTL, 42-day fitness), Acute Training Load (ATL, 7-day fatigue),\nTraining Stress Balance (TSB = CTL - ATL, form/freshness), and Acute:Chronic Workload Ratio\n(ACWR) per day. Use this to assess whether the athlete is building fitness, peaking, or\naccumulating too much fatigue.\n\nRecommended range: 4-8 weeks. Maximum: 90 days.\n\nArgs:\n    start_date: Start date in YYYY-MM-DD format\n    end_date: End date in YYYY-MM-DD format\n",
+    "inputSchema": {
+      "properties": {
+        "start_date": {
+          "title": "Start Date",
+          "type": "string"
+        },
+        "end_date": {
+          "title": "End Date",
+          "type": "string"
+        }
+      },
+      "required": [
+        "start_date",
+        "end_date"
+      ],
+      "title": "get_training_load_trendArguments",
+      "type": "object"
+    }
+  },
+  {
+    "name": "get_training_load_balance",
+    "description": "Get Garmin's Load Focus \u2014 the distribution of the trailing-month\ntraining load across Aerobic Low, Aerobic High, and Anaerobic intensity\nbands, plus the system's feedback phrase (e.g. AEROBIC_HIGH_SHORTAGE,\nBALANCED, ANAEROBIC_SHORTAGE).\n\nUse this to assess whether the athlete's training mix is balanced or\ndeficient in a particular intensity band. Each band reports its load\nalongside Garmin's target range; a `status` of \"below\", \"within\", or\n\"above\" is computed from the load relative to that range.\n\nArgs:\n    date: Date in YYYY-MM-DD format\n",
+    "inputSchema": {
+      "properties": {
+        "date": {
+          "title": "Date",
+          "type": "string"
+        }
+      },
+      "required": [
+        "date"
+      ],
+      "title": "get_training_load_balanceArguments",
+      "type": "object"
+    }
+  },
+  {
+    "name": "get_vo2max_trend",
+    "description": "Get VO2 max trend over a date range.\n\nReturns daily VO2 max estimates from Garmin's FirstBeat algorithm. Use this to track\nwhether training is producing fitness gains over weeks or months. Flat or declining\nVO2 max over 4+ weeks suggests insufficient training stimulus or overreaching.\n\nNote: VO2 max estimates are smoothed and update gradually \u2014 daily changes of <0.5\nare within normal noise. Focus on the 4-6 week trend direction.\n\nGarmin records a new VO2 max value only on days with a recompute (after an\nactivity). Days in between carry the last known value forward and are marked\nwith \"carried_forward\": true, matching the trend chart in Garmin Connect.\n\nIf historical values are unavailable, the current profile estimate is returned\nseparately and is not represented as a historical trend point.\n\nRecommended range: 4-12 weeks. Maximum: 90 days.\n\nArgs:\n    start_date: Start date in YYYY-MM-DD format\n    end_date: End date in YYYY-MM-DD format\n",
+    "inputSchema": {
+      "properties": {
+        "start_date": {
+          "title": "Start Date",
+          "type": "string"
+        },
+        "end_date": {
+          "title": "End Date",
+          "type": "string"
+        }
+      },
+      "required": [
+        "start_date",
+        "end_date"
+      ],
+      "title": "get_vo2max_trendArguments",
+      "type": "object"
+    }
+  },
+  {
+    "name": "get_workouts",
+    "description": "Get all workouts with curated summary list\n\nReturns a count and list of workout summaries with essential metadata only.\nFor detailed workout information including segments, use get_workout_by_id.\n",
+    "inputSchema": {
+      "properties": {},
+      "title": "get_workoutsArguments",
+      "type": "object"
+    }
+  },
+  {
+    "name": "get_workout_by_id",
+    "description": "Get detailed information for a specific workout\n\nReturns workout details including segments and step structure.\n\nAccepts either:\n- Numeric workout ID (from get_workouts, get_scheduled_workouts, or\n  training-plan families that expose workout_id)\n- Workout UUID (from adaptive Garmin Coach/training-plan workouts)\n\nRest-day UUIDs can resolve to a minimal record without a workout name\nor segments.\n\nArgs:\n    workout_id: Workout ID (numeric) or UUID (for training plan workouts)\n",
+    "inputSchema": {
+      "properties": {
+        "workout_id": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "title": "Workout Id"
+        }
+      },
+      "required": [
+        "workout_id"
+      ],
+      "title": "get_workout_by_idArguments",
+      "type": "object"
+    }
+  },
+  {
+    "name": "upload_workout",
+    "description": "Upload a workout from JSON data\n\nCreates a new workout in Garmin Connect from structured workout data.\n\nIMPORTANT: Step types must use Garmin's DTO format:\n- Use \"ExecutableStepDTO\" for regular steps (warmup, interval, cooldown, recovery)\n- Use \"RepeatGroupDTO\" for repeat/interval groups with numberOfIterations.\n  Always include endCondition with conditionTypeId 7 and conditionTypeKey\n  \"iterations\"; omitting conditionTypeId causes the API to silently corrupt\n  the repeat count.\n\nIMPORTANT: Heart rate targets come in two forms:\n- Named zone (e.g. Zone 2): set targetType to \"heart.rate.zone\" and use \"zoneNumber\" (1-5).\n  Do NOT put the zone number in targetValueOne.\n- Custom HR range (e.g. 105-143 bpm): set targetType to \"heart.rate.zone\" and use\n  \"targetValueOne\" (low bpm) / \"targetValueTwo\" (high bpm). Do NOT set \"zoneNumber\".\n  This matches Garmin Connect's \"Custom\" heart rate target.\nFor non-HR targets (pace, power, cadence), use targetValueOne/targetValueTwo directly.\nTarget values are fields on the workout step, alongside targetType; do not put\ntargetValueOne, targetValueTwo, or zoneNumber inside the targetType object.\nUse either zoneNumber or targetValueOne/targetValueTwo, not both. Garmin silently\ndiscards a custom range when a named zone is also present.\n\nNote: a safety check converts targetValueOne 1-5 to zoneNumber when zoneNumber is missing,\nto catch the common mistake of putting a zone index in targetValueOne. Typical bpm values\n(e.g. 105, 143) are not affected.\n\nIMPORTANT: Target type IDs and keys must match Garmin's canonical mapping.\nGarmin treats workoutTargetTypeId as authoritative, so mismatches are rejected\nbefore upload.  Known mappings:\n- workoutTargetTypeId 1  -> \"no.target\"\n- workoutTargetTypeId 2  -> \"power.zone\"  (cycling power zone 1-7, use zoneNumber)\n- workoutTargetTypeId 4  -> \"heart.rate.zone\"\n- workoutTargetTypeId 6  -> \"pace.zone\" (running/swim) OR \"power.between\" (cycling)\n\nIMPORTANT: For cycling power targets use the correct target type:\n- Power zone (zone 1-7 based on FTP %): use workoutTargetTypeId 2, key \"power.zone\",\n  and \"zoneNumber\" (1-7).\n- Absolute watt range (e.g. 200-250 W): use workoutTargetTypeId 6, key \"power.between\",\n  and \"targetValueOne\" (low watts) / \"targetValueTwo\" (high watts).\nUsing workoutTargetTypeId 2 with key \"power.between\" is a silent Garmin bug: the\nworkout uploads but Garmin stores it as \"power.zone\" and the intent is lost.\n\nUse {\"workoutTargetTypeId\": 4, \"workoutTargetTypeKey\": \"heart.rate.zone\"} with\ntargetValueOne/targetValueTwo for custom heart-rate ranges.\n\nIMPORTANT: Sport type IDs for workouts (different from activity API!):\n- 1 = running, 2 = cycling, 5 = strength_training, 6 = cardio, 11 = walking\n\nIMPORTANT: End condition IDs and keys must match Garmin's canonical mapping.\nGarmin treats conditionTypeId as authoritative, so mismatches such as\n{\"conditionTypeId\": 4, \"conditionTypeKey\": \"heart.rate\"} are rejected before\nupload because Garmin would interpret them as \"calories\". Use\n{\"conditionTypeId\": 6, \"conditionTypeKey\": \"heart.rate\"} for heart-rate\nend conditions.\n\n**Available Templates:**\nInstead of building workout JSON from scratch, you can use these MCP resources as starting points:\n- workout://templates/simple-run - Basic warmup/run/cooldown structure\n- workout://templates/interval-running - Interval training with repeat groups\n- workout://templates/tempo-run - Tempo run with heart rate zone targets\n- workout://templates/strength-circuit - Strength training with exercises, reps, rest\n- workout://reference/structure - Complete JSON structure reference with all fields\n\nAccess these resources using your MCP client's resource reading capability, modify the template\nas needed, and pass the resulting JSON as the workout_data parameter.\n\n**Strength training workouts** require these additional fields on each exercise step:\n- \"category\": exercise category (e.g. \"BENCH_PRESS\", \"PULL_UP\", \"CURL\", \"SHOULDER_PRESS\",\n  \"ROW\", \"SQUAT\", \"DEADLIFT\", \"TRICEPS_EXTENSION\", \"PLANK\", \"LUNGE\", \"CARDIO\")\n- \"exerciseName\": specific exercise (e.g. \"BARBELL_BENCH_PRESS\", \"PULL_UP\",\n  \"DUMBBELL_BICEPS_CURL\", \"DUMBBELL_SHOULDER_PRESS\", \"BENT_OVER_ROW_WITH_DUMBELL\",\n  \"BODY_WEIGHT_DIP\", \"BARBELL_SQUAT\", \"BARBELL_DEADLIFT\")\n- \"weightValue\" (optional): weight as number (e.g. 24.0)\n- \"weightUnit\" (optional): {\"unitId\": 8, \"unitKey\": \"kilogram\", \"factor\": 1000.0}\nUse endCondition reps (conditionTypeId: 10) for exercises, rest (stepTypeId: 5) between sets.\n\nExample strength exercise step:\n{\n    \"type\": \"ExecutableStepDTO\",\n    \"stepOrder\": 1,\n    \"stepType\": {\"stepTypeId\": 3, \"stepTypeKey\": \"interval\"},\n    \"endCondition\": {\"conditionTypeId\": 10, \"conditionTypeKey\": \"reps\"},\n    \"endConditionValue\": 10.0,\n    \"targetType\": {\"workoutTargetTypeId\": 1, \"workoutTargetTypeKey\": \"no.target\"},\n    \"category\": \"BENCH_PRESS\",\n    \"exerciseName\": \"BARBELL_BENCH_PRESS\",\n    \"weightValue\": 60.0,\n    \"weightUnit\": {\"unitId\": 8, \"unitKey\": \"kilogram\", \"factor\": 1000.0}\n}\n\nExample running workout with HR zone target:\n{\n    \"workoutName\": \"My Workout\",\n    \"sportType\": {\"sportTypeId\": 1, \"sportTypeKey\": \"running\"},\n    \"workoutSegments\": [{\n        \"segmentOrder\": 1,\n        \"sportType\": {\"sportTypeId\": 1, \"sportTypeKey\": \"running\"},\n        \"workoutSteps\": [{\n            \"type\": \"ExecutableStepDTO\",\n            \"stepOrder\": 1,\n            \"stepType\": {\"stepTypeId\": 3, \"stepTypeKey\": \"interval\"},\n            \"endCondition\": {\"conditionTypeId\": 2, \"conditionTypeKey\": \"time\"},\n            \"endConditionValue\": 1200.0,\n            \"targetType\": {\"workoutTargetTypeId\": 4, \"workoutTargetTypeKey\": \"heart.rate.zone\"},\n            \"zoneNumber\": 3\n        }]\n    }]\n}\n\nArgs:\n    workout_data: Dictionary containing workout structure (name, sport type, segments, etc.)\n",
+    "inputSchema": {
+      "properties": {
+        "workout_data": {
+          "additionalProperties": true,
+          "title": "Workout Data",
+          "type": "object"
+        }
+      },
+      "required": [
+        "workout_data"
+      ],
+      "title": "upload_workoutArguments",
+      "type": "object"
+    }
+  },
+  {
+    "name": "get_scheduled_workouts",
+    "description": "Get scheduled workouts between two dates with curated summary list\n\nReturns workouts that have been scheduled on the Garmin Connect calendar,\nincluding their scheduled dates and completion status.\n\nArgs:\n    start_date: Start date in YYYY-MM-DD format\n    end_date: End date in YYYY-MM-DD format\n",
+    "inputSchema": {
+      "properties": {
+        "start_date": {
+          "title": "Start Date",
+          "type": "string"
+        },
+        "end_date": {
+          "title": "End Date",
+          "type": "string"
+        }
+      },
+      "required": [
+        "start_date",
+        "end_date"
+      ],
+      "title": "get_scheduled_workoutsArguments",
+      "type": "object"
+    }
+  },
+  {
+    "name": "get_garmin_coach_workouts",
+    "description": "Get Garmin Coach workouts around the given date\n\nReturns workouts from the active Garmin Coach/training plan, including\nplan metadata, workout identifiers, dates, sport, duration, completion\nstatus, rest days, race days, and workout intent when Garmin provides\nthem. Adaptive plans expose only Garmin's currently generated window,\ntypically the current week; future dates may return no workouts even\nwhile a plan is active. The count includes rest-day entries.\n\nGarmin's standalone Daily Suggested Workouts are generated on compatible\ndevices. As of July 31, 2026, no supported or known Garmin Connect\nweb/API endpoint, including those exposed by this project's\npython-garminconnect dependency, returns the device's upcoming DSW\nschedule. This tool returns Garmin Coach/training-plan workouts and does\nnot synthesize device-generated suggestions.\n\nThis is the preferred tool for Garmin Coach requests. The legacy\nget_training_plan_workouts tool returns the same data; do not call both.\n\nAdaptive Coach plans typically expose workout_uuid; other plan families\nmay expose numeric workout_id. Pass whichever identifier is present to\nget_workout_by_id. Rest-day UUIDs may return minimal detail without\nworkout segments.\n\nArgs:\n    calendar_date: Reference date in YYYY-MM-DD format (returns week's workouts)\n",
+    "inputSchema": {
+      "properties": {
+        "calendar_date": {
+          "title": "Calendar Date",
+          "type": "string"
+        }
+      },
+      "required": [
+        "calendar_date"
+      ],
+      "title": "get_garmin_coach_workoutsArguments",
+      "type": "object"
+    }
+  },
+  {
+    "name": "schedule_workout",
+    "description": "Schedule a workout to a specific calendar date\n\nThis adds an existing workout from your Garmin workout library\nto your Garmin Connect calendar on the specified date.\n\nIdempotent: if the workout is already scheduled for that date, this\nis a no-op that reports success without creating a duplicate entry.\n\nArgs:\n    workout_id: ID of the workout to schedule (get IDs from get_workouts)\n    calendar_date: Date to schedule the workout in YYYY-MM-DD format\n",
+    "inputSchema": {
+      "properties": {
+        "workout_id": {
+          "title": "Workout Id",
+          "type": "integer"
+        },
+        "calendar_date": {
+          "title": "Calendar Date",
+          "type": "string"
+        }
+      },
+      "required": [
+        "workout_id",
+        "calendar_date"
+      ],
+      "title": "schedule_workoutArguments",
+      "type": "object"
+    }
+  },
+  {
+    "name": "get_activity_fit_messages",
+    "description": "Retrieve and generically parse an activity's original FIT file.\n\nThis is the source-of-truth endpoint for original device activity data.\nIt returns every message and every field emitted by the FIT decoder\nwithout applying sport-specific curation. Messages remain in file order,\nand each field includes its decoded value plus units and definition\nnumber when available. Unknown and duplicate fields are retained.\n\nGarmin Connect edits made after upload may be stored only in Garmin's\nservice and are not necessarily written back into the original FIT file.\nThis tool intentionally does not merge those service-side edits.\n\nHigh-frequency ``record`` messages are counted but omitted by default.\nOther message types occurring more than 100 times are also inventoried\nbut omitted from an unfiltered default response. Request those types\nexplicitly with message_types. All returned messages are bounded by\nmessage_offset/message_limit (maximum 5000 per call); follow\npagination.next_offset until absent to retrieve the full selected stream.\n\nUse message_types to return only particular FIT message types while\nmessage_counts still inventories the complete file. For example, a\nstrength workout can usually be inspected efficiently with\n[\"session\", \"lap\", \"set\", \"exercise_title\"]. Message type names are\ncase-insensitive and should use FIT/fitparse snake_case names.\n\nArgs:\n    activity_id: Garmin activity ID.\n    message_types: Optional list of FIT message types to return. Omit to\n                   return low-frequency non-record message types.\n    include_records: Include the high-frequency record stream (default false).\n    message_offset: Zero-based offset within the selected message stream.\n    message_limit: Maximum messages returned per call, 1-5000 (default 1000).\n",
+    "inputSchema": {
+      "properties": {
+        "activity_id": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "title": "Activity Id"
+        },
+        "message_types": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Message Types"
+        },
+        "include_records": {
+          "default": false,
+          "title": "Include Records",
+          "type": "boolean"
+        },
+        "message_offset": {
+          "default": 0,
+          "title": "Message Offset",
+          "type": "integer"
+        },
+        "message_limit": {
+          "default": 1000,
+          "title": "Message Limit",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "activity_id"
+      ],
+      "title": "get_activity_fit_messagesArguments",
+      "type": "object"
+    }
+  }
+]

@@ -1,0 +1,25 @@
+data/
+.build/
+.venv*/
+__pycache__/
+*.pyc
+dist/
+.DS_Store
+.env*
+!.env.example
+.mcp.json
+.codex/
+.claude/
+.garminconnect/
+node_modules/
+logs/
+
+# Personal, local-only material (never published)
+private/
+CLAUDE.local.md
+AGENTS.override.md
+*.local.md
+
+# Evidence produced from your own Garmin account stays local
+docs/evidence/chat-workout-live-check.json
+docs/evidence/chat-workout-review-check.json

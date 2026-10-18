@@ -1,0 +1,13 @@
+{
+  "recorded_at": "2026-10-03T09:30:49+00:00",
+  "data": "synthetic fixtures and a disposable user statement only",
+  "provider": "Claude API",
+  "model": "claude-sonnet-5-5",
+  "checks": [
+    "Reviewed memory reached the live API context",
+    "Answer recalled the synthetic saved training day",
+    "Structured answer validated; no workout or Garmin operation",
+    "Temporary store removed; real athlete memory unchanged"
+  ],
+  "result": "passed"
+}

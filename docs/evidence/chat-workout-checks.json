@@ -1,0 +1,19 @@
+{
+  "recorded_at": "2026-10-03",
+  "data": "Disposable simulated Garmin provenance and mocked MCP account responses",
+  "browser": "Chrome and Playwright at 1440px and 390px",
+  "checks": [
+    "Coach conversation saved a structured workout proposal",
+    "Exact workout approval required a checked date, duration, steps and intensity acknowledgement",
+    "Approval created one selected additional local workout and preserved the saved three-session week",
+    "Separate Send action called the guarded mocked Garmin upload and schedule path",
+    "Positive Connect readback marked the workout scheduled",
+    "Simulated watch report was stored as a user statement",
+    "Mobile Plan layout had no horizontal overflow and browser had no JavaScript errors",
+    "Saved live proposal preview rendered at desktop width with approval unchecked and no state write"
+  ],
+  "result": "passed",
+  "actual_garmin_writes": 0,
+  "actual_watch_receipt_for_chat_workout": "not tested",
+  "screenshots": "private temporary files only"
+}

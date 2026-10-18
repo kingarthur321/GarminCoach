@@ -1,0 +1,40 @@
+{
+  "profile_confirmed": false,
+  "display_name": "Runner",
+  "language": "en",
+  "timezone": "Europe/Stockholm",
+  "units": "metric",
+  "goal": {
+    "distance_km": 5,
+    "target_time_seconds": 1200,
+    "target_date": null
+  },
+  "baseline": {
+    "recent_5k_time_seconds": null,
+    "recent_5k_date": null
+  },
+  "availability": {
+    "running_days": [
+      "tuesday",
+      "thursday",
+      "sunday"
+    ],
+    "other_training": []
+  },
+  "constraints": {
+    "max_session_minutes": null,
+    "current_discomfort": null,
+    "notes": "Replace the example availability with your own. Record relevant constraints before confirming the profile."
+  },
+  "data": {
+    "activity_lookback_days": 42,
+    "wellness_lookback_days": 14
+  },
+  "automation": {
+    "enabled": false,
+    "daily_local_time": "07:00",
+    "weekly_plan_day": "sunday",
+    "garmin_write_policy": "draft_only",
+    "max_agent_run_minutes": 5
+  }
+}

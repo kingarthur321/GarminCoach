@@ -1,0 +1,17 @@
+{
+  "recorded_at": "2026-10-03T08:45:35.204Z",
+  "data": "synthetic fixtures only",
+  "coach": "mock executor, no model or Garmin account calls",
+  "browser": "Chrome + Playwright",
+  "checks": [
+    "Latest run, source/update time, route, four summary metrics and upcoming drafts render",
+    "Overview shows the selected run; history navigation, linked HR/pace/elevation cursor, projection/zoom/pan/fit, endpoints and cumulative splits work",
+    "Acute and category load markers match saved values and target ranges; blue/orange/red colors and dated metric history work",
+    "Run comparison uses two saved series; workout preview shows structured steps and illustrative upload guard",
+    "All five pages share the workspace layout at desktop/390px; no mobile overflow; reachable settings and floating coach inside viewport",
+    "Profile edits require renewed confirmation; profile, feedback and session date changes persist and flag review; imported HTML remains plain text",
+    "Async mock coach replies persist, cite saved evidence, navigate to trends and preview a separate proposal without replacing the plan",
+    "History search, calendar, recovery graphs and all five pages work; private file URLs and coach requests without CSRF token are denied",
+    "No browser JavaScript errors"
+  ]
+}

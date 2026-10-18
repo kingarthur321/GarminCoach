@@ -1,0 +1,13 @@
+{
+  "recorded_at": "2026-10-02T10:33:34.054Z",
+  "data": "Synthetic coordinates and intercepted fixture tile images only",
+  "provider_requests": 0,
+  "checks": [
+    "Offline route makes no tile requests",
+    "Mercator route cursor and known tile center align",
+    "Keyboard pan moves route and tiles by the same pixels",
+    "Zoom preserves recorded route",
+    "Tile failure retains route and shows missing-map state"
+  ],
+  "result": "passed"
+}

@@ -1,0 +1,28 @@
+{
+  "recorded_at": "2026-10-03",
+  "command": "python3 -m unittest discover -q",
+  "python": "3.14.6",
+  "tests_run": 91,
+  "failures": 0,
+  "errors": 0,
+  "result": "passed",
+  "data": "Synthetic fixtures and mocked MCP/account responses only; no Garmin account",
+  "groups": [
+    "normalization and stdio protocol",
+    "validation and private persistence; dated training evidence and stale-context rejection",
+    "profile confirmation blockers, unchanged saves and timezone refresh detection",
+    "dashboard launch failure leaves coaching status unchanged",
+    "Garmin policy, one-off availability exception and weekly-plan preservation, effort-cue readback and uncertain-write recovery with delayed calendar confirmation",
+    "recurring runner safeguards",
+    "HTTP allowlist, same-origin writes and dashboard API key secrecy",
+    "successful collection clears stale auth state and preserves snapshot",
+    "bounded dashboard series, source separation and load ranges",
+    "conversation evidence validation, separate proposals and cancellation; Claude API request shape and safe key errors",
+    "chat proposal exact review, stale-input, saved-week and date conflict guards, saved-week change after approval blocks Garmin write, mocked Garmin send, duplicate prevention and watch statement path",
+    "Garmin planned-run import, Coach/calendar deduplication, other-sport filtering, ambiguous read preservation, chat schedule references and same-origin read-only refresh",
+    "durable athlete memory provenance, correction/deletion, bounded context, same-origin HTTP round trip and stale planning rejection",
+    "original FIT units, pagination, thinning and import preservation",
+    "protected map preference, disabled requests, cache reuse, conditional revalidation and failure retention",
+    "bounded training import, latest readiness, explicit dated resting HR, precise running VO2, separate chronic/focus targets, plan/GPS preservation, concurrent input and failed-save rollback"
+  ]
+}

@@ -1,0 +1,43 @@
+START HERE
+
+1. Try the dashboard with sample data (no accounts needed):
+
+   ./launch.sh
+   open http://127.0.0.1:8765
+
+2. Optional: enable the Claude coach chat.
+
+   cp .env.example .env      # then paste your Anthropic API key
+
+3. Connect your own Garmin account (you type credentials and MFA yourself):
+
+   python3 scripts/install_mcp.py
+   ./.venv-mcp/bin/garmin-mcp-auth
+   python3 scripts/configure_client.py claude     # or: codex
+
+4. Open this folder in Claude Code or Codex and paste one of the prompts below.
+
+Full instructions: README.md and docs/LAUNCH.md. Coaching procedure: COACHING.md.
+
+
+FIRST SESSION PROMPT — PERSONALIZE THE COACH
+
+Read AGENTS.md, BUILD_SPEC.md, STATUS.md and COACHING.md. Help me replace the example athlete profile with my real goal, running days, other training and constraints; ask me only for what you cannot read from Garmin. Then import my recent Garmin training with the configured MCP tools, validate it, and prepare an evidence-based draft week. Keep the Garmin write policy draft_only and scheduling disabled unless I explicitly change them. Record which checks used my real account and which used fixtures.
+
+
+COACH UPDATE PROMPT — AFTER YOUR PROFILE IS CONFIRMED
+
+Read the confirmed private athlete profile, current plan, feedback and run status. Fetch the relevant new Garmin observations using the configured MCP tools. Follow the project's coaching procedure, validate and save the updated summary and plan, and explain meaningful changes with data references.
+
+Apply the configured Garmin write policy. Reconcile previous writes before creating anything new. Preserve completed sessions and unrelated workouts. Update the status and retain the last valid output if an operation fails.
+
+
+ORIGINAL BUILD PROMPT — TO REBUILD OR EXTEND THE PROJECT FROM THE SPEC
+
+Read AGENTS.md, BUILD_SPEC.md and STATUS.md. Build the AI running coach through the specified stages. Make routine implementation decisions yourself and keep progressing until the local prototype and relevant checks are complete. Update STATUS.md as you work.
+
+Complete independent work while Garmin authentication or profile confirmation is pending. Use clearly labeled synthetic data for development. Tell me the exact account-dependent step when it becomes necessary, and keep credentials in the authentication tool.
+
+Use the existing coding agent as the coach and build a small dashboard for saved results. Verify a real Garmin read and one authorized workout when account access is available. Document the watch sync separately. Prepare the optional recurring runner after the manual workflow is working, with scheduling initially disabled.
+
+Finish with launch instructions, verification evidence and a clean distributable project. Do not claim that an account or device step passed without evidence.

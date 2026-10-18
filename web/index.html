@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f3f6fb">
+  <title>Running · Your coaching workspace</title>
+  <link rel="stylesheet" href="/style.css"><script src="/map.js" defer></script><script src="/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#dashboard">Skip to workspace</a>
+  <div class="app-window">
+    <aside class="rail" aria-label="Running workspace">
+      <a class="brand" href="#overview"><span class="brand-symbol" data-icon="running"></span><span>Running</span></a>
+      <nav aria-label="Main navigation">
+        <button data-view="overview" class="active" aria-current="page"><span data-icon="home"></span><span>Overview</span></button>
+        <button data-view="runs"><span data-icon="runs"></span><span>Runs</span></button>
+        <button data-view="plan"><span data-icon="calendar"></span><span>Plan</span></button>
+        <button data-view="trends"><span data-icon="trend"></span><span>Trends</span></button>
+      </nav>
+      <div class="rail-recent"><p class="rail-label">Recent runs</p><div id="recent-runs"></div><button id="all-runs" class="text-button">View all runs <span aria-hidden="true">↗</span></button></div>
+      <button class="settings-link" data-view="settings"><span data-icon="settings"></span><span>Settings</span></button>
+    </aside>
+    <main>
+      <div class="toolbar"><div id="breadcrumb" class="breadcrumb">Overview <span>/</span> Latest activity</div><div class="toolbar-actions"><button class="mobile-settings icon-button" data-view="settings" aria-label="Athlete settings"><span data-icon="settings"></span></button><button id="update" class="icon-button" aria-label="Update with coding agent" title="Update saved observations"><span data-icon="refresh"></span></button><div id="source-banner" class="source-banner" role="status">Loading saved results…</div></div></div>
+      <div id="notice" class="notice" role="status" hidden></div>
+      <div id="dashboard" tabindex="-1"><div class="loading-state">Opening your running workspace…</div></div>
+    </main>
+  </div>
+  <div class="coach-shell">
+    <section id="coach-panel" class="coach-panel" aria-label="Coach conversation" hidden>
+      <div class="coach-panel-heading"><div><strong>Your running coach</strong><span id="coach-connection">Answers from saved observations</span></div><div class="actions"><button id="cancel-coach" class="text-button" hidden>Cancel</button><button id="close-coach" class="icon-button" aria-label="Close conversation">×</button></div></div>
+      <div id="coach-messages" class="coach-messages" role="log" aria-live="polite"></div>
+      <p id="coach-progress" class="coach-progress" role="status" hidden></p>
+    </section>
+    <form id="coach-form" class="coach-bar">
+      <button id="open-coach" type="button" class="coach-toggle" aria-label="Open coach conversation" aria-expanded="false"><span class="coach-dot"></span><strong>Coach</strong></button>
+      <label class="sr-only" for="coach-input">Ask your coach</label><input id="coach-input" placeholder="Ask your coach about this run…" maxlength="2000" autocomplete="off" required>
+      <button id="send-coach" type="submit" class="send-button" aria-label="Send to coach"><span data-icon="send"></span></button>
+    </form>
+  </div>
+  <dialog id="workout-dialog" class="workout-dialog"><div class="dialog-top"><span class="eyebrow">WORKOUT PREVIEW</span><button class="icon-button" data-close="workout-dialog" aria-label="Close workout preview">×</button></div><div id="workout-content"></div></dialog>
+  <dialog id="compare-dialog" class="compare-dialog"><div class="dialog-top"><span class="eyebrow">RUN COMPARISON</span><button class="icon-button" data-close="compare-dialog" aria-label="Close run comparison">×</button></div><div id="compare-content"></div></dialog>
+  <dialog id="metric-dialog"><div class="dialog-top"><span class="eyebrow">TRAINING CONTEXT</span><button class="icon-button" data-close="metric-dialog" aria-label="Close metric details">×</button></div><div id="metric-content"></div></dialog>
+  <dialog id="memory-dialog" class="memory-dialog"><div class="dialog-top"><span class="eyebrow">ATHLETE MEMORY</span><button class="icon-button" data-close="memory-dialog" aria-label="Close memory editor">×</button></div><h2 id="memory-title">Save a memory</h2><p id="memory-source" class="muted"></p><form id="memory-form"><label for="memory-text">What should your coach remember?</label><textarea id="memory-text" maxlength="600" required></textarea><div class="actions"><button type="submit" class="button primary">Save memory</button><button type="button" class="button" data-close="memory-dialog">Cancel</button></div></form></dialog>
+  <dialog id="watch-dialog" class="memory-dialog"><div class="dialog-top"><span class="eyebrow">WATCH CHECK</span><button class="icon-button" data-close="watch-dialog" aria-label="Close watch check">×</button></div><h2 id="watch-title">Confirm on your watch</h2><p>Only confirm after the workout date and steps appear on your watch. Connect scheduling alone does not prove device receipt.</p><form id="watch-form"><label for="watch-note">What did you see? Include watch model, date and step display.</label><textarea id="watch-note" maxlength="1000" required></textarea><div class="actions"><button type="submit" class="button primary">Save watch confirmation</button><button type="button" class="button" data-close="watch-dialog">Cancel</button></div></form></dialog>
+  <dialog id="update-dialog"><div class="dialog-top"><span class="eyebrow">UPDATE YOUR OBSERVATIONS</span><button id="close-dialog" class="icon-button" aria-label="Close update instructions">×</button></div><h2>Bring your coach up to date.</h2><p>Your workspace reads saved Garmin observations. Conversation uses that saved context; importing newer observations is a separate manual step through your coding agent.</p><ol><li>Open Codex or Claude Code in this project.</li><li>Use the prompt below to review and save new observations.</li><li>Reload the saved results here when the update is complete.</li></ol><pre id="update-prompt">Read COACHING.md and follow its manual update procedure. Read the private profile, feedback, current plan and run status. Fetch relevant new Garmin observations through the configured MCP tools. Validate and save the observations and summary, preserving the current plan unless a review is requested. Do not invent unavailable data. Apply the configured write policy and report watch verification separately.</pre><div class="actions"><button id="copy-prompt" class="button primary">Copy coach prompt</button><button id="reload" class="button">Reload saved results</button></div><p class="muted">Your goal and availability may still need confirmation. Scheduling stays disabled until you enable it locally.</p></dialog>
+</body>
+</html>

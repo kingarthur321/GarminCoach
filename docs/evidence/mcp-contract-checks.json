@@ -1,0 +1,16 @@
+{
+  "data": "Synthetic API responses through actual pinned MCP tools; no Garmin account",
+  "commit": "cfc5d799ab0f165e837f1188a1d093c65838aaf7",
+  "checks": [
+    "Actual upload_workout accepts compiled structured steps",
+    "Actual get_workout_by_id curator matches local verification",
+    "Actual activity curator matches normalization",
+    "Actual sleep range curator matches normalization",
+    "Actual calendar curator preserves scheduled entry ID",
+    "Actual readiness timestamps and status/load curators match import",
+    "Actual load focus retains category target ranges separately from chronic targets",
+    "Actual VO2 tool retains precise running estimate",
+    "Actual RHR tool retains dated resting values",
+    "Actual recovery tool handles REACHED_ZERO without using stale assigned recovery"
+  ]
+}
